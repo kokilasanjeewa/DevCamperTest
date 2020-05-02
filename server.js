@@ -1,4 +1,7 @@
+//https://nodejs.org/es/docs/guides/anatomy-of-an-http-transaction/
 const http = require('http');
+const os = require('os');
+
 const todo = [
   {
     Id: 1,
@@ -12,6 +15,7 @@ const todo = [
 const server = http.createServer((req, res) => {
   const { headers, url, method } = req;
   console.log(headers, url);
+  console.log(os.networkInterfaces());
   //res.setHeader('Content-Type', 'text/html');
   //res.statusCode = 404;
   // setHeader == writeHead
@@ -29,7 +33,7 @@ const server = http.createServer((req, res) => {
     body.push(chank);
   });
   req.on('end', () => {
-    body = Buffer.concat(body);
+    body = Buffer.concat(body).toString();
     console.log(body);
   });
   res.write('<h1>hello</h1>');

@@ -1,0 +1,14 @@
+{
+  "name": "devcamper",
+  "version": "1.0.0",
+  "description": "DevCamper Project By Kokila",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "nodemon": "^2.0.3"
+  }
+}

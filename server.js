@@ -1,4 +1,6 @@
 //https://nodejs.org/es/docs/guides/anatomy-of-an-http-transaction/
+
+//version one session node learning
 const http = require('http');
 const os = require('os');
 

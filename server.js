@@ -24,6 +24,16 @@ const server = http.createServer((req, res) => {
   console.log(req.headers.authorization);
   // body request capture
   let body = [];
+  let status = 404;
+  let response = {
+    success: false,
+    data: null
+  }
+  if (method === 'Get' && url === '/todos') {
+    status = 200,
+      response.success = true,
+      response.data = todo
+  }
   req.on('data', (chank) => {
     body.push(chank);
   });
@@ -37,9 +47,7 @@ const server = http.createServer((req, res) => {
     });
     res.end(
       JSON.stringify({
-        success: true,
-        data: todo,
-        error: 'error on todo',
+        response
       }),
     );
   });

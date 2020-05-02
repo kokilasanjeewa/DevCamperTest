@@ -13,19 +13,30 @@ const server = http.createServer((req, res) => {
   const { headers, url, method } = req;
   console.log(headers, url);
   //res.setHeader('Content-Type', 'text/html');
-  res.statusCode = 404;
+  //res.statusCode = 404;
   // setHeader == writeHead
   //res.setHeader('Content-Type', 'application/json');
   //res.setHeader('X-Powerd', 'Node');
-  res.writeHead(404, {
+  res.writeHead(200, {
     'Content-Type': 'application/json',
     'X-Powerd': 'Node',
+  });
+  // headers request  capture
+  console.log(req.headers.authorization);
+  // body request capture
+  let body = [];
+  req.on('data', (chank) => {
+    body.push(chank);
+  });
+  req.on('end', () => {
+    body = Buffer.concat(body);
+    console.log(body);
   });
   res.write('<h1>hello</h1>');
   res.end(
     JSON.stringify({
-      success: false,
-      data: null,
+      success: true,
+      data: todo,
       error: 'error on todo',
     }),
   );

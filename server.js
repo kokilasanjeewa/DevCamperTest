@@ -1,11 +1,10 @@
 //https://nodejs.org/es/docs/guides/anatomy-of-an-http-transaction/
 
-//version one session node learning
+//version two session node learning
 const http = require('http');
 const os = require('os');
 
-const todo = [
-  {
+const todo = [{
     Id: 1,
     Name: 'kokila',
   },
@@ -15,18 +14,12 @@ const todo = [
   },
 ];
 const server = http.createServer((req, res) => {
-  const { headers, url, method } = req;
-  console.log(headers, url);
-  console.log(os.networkInterfaces());
-  //res.setHeader('Content-Type', 'text/html');
-  //res.statusCode = 404;
-  // setHeader == writeHead
-  //res.setHeader('Content-Type', 'application/json');
-  //res.setHeader('X-Powerd', 'Node');
-  res.writeHead(200, {
-    'Content-Type': 'application/json',
-    'X-Powerd': 'Node',
-  });
+  const {
+    headers,
+    url,
+    method
+  } = req;
+
   // headers request  capture
   console.log(req.headers.authorization);
   // body request capture
@@ -37,17 +30,21 @@ const server = http.createServer((req, res) => {
   req.on('end', () => {
     body = Buffer.concat(body).toString();
     console.log(body);
-  });
-  res.write('<h1>hello</h1>');
-  res.end(
-    JSON.stringify({
-      success: true,
-      data: todo,
-      error: 'error on todo',
-    }),
-  );
-});
 
+    res.writeHead(200, {
+      'Content-Type': 'application/json',
+      'X-Powerd': 'Node',
+    });
+    res.end(
+      JSON.stringify({
+        success: true,
+        data: todo,
+        error: 'error on todo',
+      }),
+    );
+  });
+
+});
 const port = 5000;
 server.listen(port, '127.0.0.1', () => {
   console.log(`Server running on port ${port}`);

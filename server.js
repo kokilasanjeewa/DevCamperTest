@@ -4,7 +4,8 @@
 const http = require('http');
 const os = require('os');
 
-const todo = [{
+const todo = [
+  {
     Id: 1,
     Name: 'kokila',
   },
@@ -14,44 +15,44 @@ const todo = [{
   },
 ];
 const server = http.createServer((req, res) => {
-  const {
-    headers,
-    url,
-    method
-  } = req;
-
+  const { headers, url, method } = req;
+  let body = [];
   // headers request  capture
   console.log(req.headers.authorization);
   // body request capture
-  let body = [];
-  let status = 404;
-  let response = {
-    success: false,
-    data: null
-  }
-  if (method === 'Get' && url === '/todos') {
-    status = 200,
-      response.success = true,
-      response.data = todo
-  }
   req.on('data', (chank) => {
     body.push(chank);
   });
   req.on('end', () => {
     body = Buffer.concat(body).toString();
     console.log(body);
-
-    res.writeHead(200, {
+    let status = 404;
+    let response = {
+      success: false,
+      data: null,
+    };
+    if (method === 'GET' && url === '/todos') {
+      status = 200;
+      response.success = true;
+      response.data = todo;
+    } else if (method === 'POST' && url === '/todos') {
+      console.log(body);
+      const { Id, Name } = JSON.parse(body);
+      todo.push({ Id, Name });
+      status = 201;
+      response.success = true;
+      response.data = todo;
+    }
+    res.writeHead(status, {
       'Content-Type': 'application/json',
       'X-Powerd': 'Node',
     });
     res.end(
       JSON.stringify({
-        response
+        response,
       }),
     );
   });
-
 });
 const port = 5000;
 server.listen(port, '127.0.0.1', () => {
